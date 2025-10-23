@@ -1,0 +1,638 @@
+/* ============================================== */
+/* 1. CONFIGURAÇÃO BASE             */
+/* ============================================== */
+
+/* Variáveis de Cores (Paleta Dark/Tech) */
+:root {
+    --color-bg-dark: #0f0f1d; /* Fundo principal muito escuro */
+    --color-bg-light: #1a1a2e; /* Fundo de seção/cards escuro */
+    --color-primary: #e94560; /* Destaque principal (Vibrante) */
+    --color-secondary: #00a6ff; /* Destaque secundário (Links/Ícones) */
+    --color-text: #f0f0f0; /* Texto principal */
+    --color-text-subtle: #a0a0a0; /* Texto secundário */
+    --color-card-bg: rgba(26, 26, 46, 0.85); /* Fundo de card semi-transparente */
+    --color-border: rgba(63, 63, 90, 0.4); /* Bordas sutis */
+}
+
+/* Reset Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden; 
+}
+
+h1, h2, h3 {
+    font-family: 'Fira Code', monospace;
+    color: var(--color-text);
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    color: var(--color-primary);
+    margin-bottom: 50px;
+    position: relative;
+}
+
+/* Separador visual para títulos */
+.section-title::after {
+    content: '//';
+    color: var(--color-secondary);
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+/* ============================================== */
+/* 2. ANIMAÇÕES CSS                 */
+/* ============================================== */
+
+/* Keyframes de Animação */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Estado Inicial Oculto para Animação de Scroll */
+.animate-scroll {
+    opacity: 0;
+    /* Transição de fallback suave se JS falhar ou animação CSS não carregar */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+}
+
+/* Estado Inicial Oculto para Animação da Seção HERO (Inicial) */
+.animate-initial {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Estado Final (Visível) Aplicado pelo JavaScript */
+.animate-scroll.is-visible.fade-in-up,
+.animate-initial.fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+.animate-scroll.is-visible.fade-in-left,
+.animate-initial.fade-in-left {
+    animation: fadeInLeft 0.8s ease-out forwards;
+}
+.animate-scroll.is-visible.fade-in-right,
+.animate-initial.fade-in-right {
+    animation: fadeInRight 0.8s ease-out forwards;
+}
+.animate-scroll.is-visible.fade-in,
+.animate-initial.fade-in {
+    animation: fadeIn 1.0s ease-out forwards;
+    transform: none; /* Remove a translação se for apenas fade */
+}
+
+
+/* ============================================== */
+/* 3. HEADER E NAV                */
+/* ============================================== */
+
+.main-header {
+    background-color: rgba(15, 15, 29, 0.98); 
+    backdrop-filter: blur(8px); /* Efeito mais pronunciado */
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.logo span {
+    color: var(--color-primary);
+}
+
+.desktop-nav a {
+    margin-left: 25px;
+    font-weight: 600;
+    color: var(--color-text-subtle);
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a.active {
+    color: var(--color-secondary);
+    border-bottom-color: var(--color-secondary);
+}
+
+/* Mobile Navigation (Mantenha o CSS para JS) */
+.menu-toggle { display: none; background: none; border: none; font-size: 2rem; color: var(--color-text); cursor: pointer; }
+.mobile-nav { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--color-bg-dark); border-top: 1px solid var(--color-border); flex-direction: column; padding: 20px 0; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); z-index: 999; }
+.mobile-nav.is-open { display: flex; }
+.mobile-nav a { padding: 15px 20px; color: var(--color-text); font-weight: 600; text-align: left; border-bottom: 1px solid var(--color-border); }
+
+
+/* ============================================== */
+/* 4. BOTÕES                    */
+/* ============================================== */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.5);
+}
+
+.btn-primary:hover {
+    background-color: #d13a51; 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.7);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-secondary);
+    border: 2px solid var(--color-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-bg-dark);
+    transform: translateY(-3px);
+}
+
+.btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-subtle);
+    border: none;
+    box-shadow: none;
+}
+
+
+/* ============================================== */
+/* 5. SEÇÃO HERO                  */
+/* ============================================== */
+.hero-section {
+    background: radial-gradient(circle at top left, var(--color-bg-light) 0%, var(--color-bg-dark) 70%);
+    padding: 150px 0 100px;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--color-primary);
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+    margin-bottom: 40px;
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.hero-section h2 {
+    font-size: 1.8rem;
+    color: var(--color-secondary);
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    max-width: 650px;
+    margin: 0 auto 50px auto;
+    color: var(--color-text-subtle);
+}
+
+.hero-actions .btn {
+    margin: 0 15px;
+}
+
+
+/* ============================================== */
+/* 6. SEÇÃO SOBRE MIM              */
+/* ============================================== */
+.about-section {
+    background-color: var(--color-bg-light);
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: flex-start;
+    gap: 60px;
+    text-align: left;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-photo {
+    width: 300px;
+    height: 300px;
+    border-radius: 8px; /* Mais profissional */
+    object-fit: cover;
+    border: 3px solid var(--color-secondary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 166, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.about-text {
+    flex-grow: 1;
+    font-size: 1.05rem;
+    color: var(--color-text-subtle);
+}
+
+.about-text p {
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+
+/* ============================================== */
+/* 7. SEÇÃO CARREIRA                */
+/* ============================================== */
+.career-section {
+    background-color: var(--color-bg-dark);
+}
+
+.career-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 70px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.timeline-photo-wrapper {
+    flex-shrink: 0;
+    width: 300px;
+}
+
+.timeline-photo {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 0 25px rgba(233, 69, 96, 0.6);
+}
+
+.timeline-items {
+    flex-grow: 1;
+    position: relative;
+    padding-left: 50px;
+    border-left: 2px dashed var(--color-border); /* Linha do tempo pontilhada */
+}
+
+.timeline-item {
+    margin-bottom: 50px;
+    position: relative;
+    background-color: var(--color-card-bg);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--color-border);
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -38px; 
+    top: 28px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    border: 4px solid var(--color-bg-dark);
+    box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.timeline-item h3 {
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+    margin-bottom: 5px;
+}
+
+.timeline-item .date {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 12px;
+}
+
+.timeline-item p {
+    font-size: 1rem;
+    color: var(--color-text-subtle);
+}
+
+
+/* ============================================== */
+/* 8. SEÇÃO HABILIDADES             */
+/* ============================================== */
+.skills-section {
+    background-color: var(--color-bg-light);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.skill-card {
+    padding: 35px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-border);
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 166, 255, 0.2);
+}
+
+.skill-card i {
+    font-size: 4rem;
+    color: var(--color-secondary);
+    text-shadow: 0 0 15px rgba(0, 166, 255, 0.8);
+    margin-bottom: 20px;
+}
+
+.skill-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.skill-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-subtle);
+}
+
+
+/* ============================================== */
+/* 9. SEÇÃO PROJETOS                */
+/* ============================================== */
+.projects-section {
+    background-color: var(--color-bg-dark);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.project-card {
+    padding: 35px;
+    border-radius: 12px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+    border: 1px solid var(--color-border);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+}
+
+.project-card h3 {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    font-size: 1rem;
+    color: var(--color-text-subtle);
+    margin-bottom: 25px;
+}
+
+.project-links {
+    margin-top: auto; 
+}
+
+.project-btn {
+    margin-right: 15px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+}
+
+.project-btn i {
+    margin-right: 5px;
+}
+
+
+/* ============================================== */
+/* 10. SEÇÃO CONTATO              */
+/* ============================================== */
+.contact-section {
+    background-color: var(--color-bg-light);
+}
+
+.contact-intro {
+    font-size: 1.15rem;
+    color: var(--color-text-subtle);
+    margin-bottom: 50px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-form {
+    max-width: 650px;
+    margin: 0 auto 60px auto;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: left;
+    border: 1px solid var(--color-border);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #3f3f5a;
+    border-radius: 8px;
+    background-color: #20203a;
+    color: var(--color-text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(0, 166, 255, 0.3);
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 15px;
+}
+
+.form-status {
+    margin-top: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.form-status.success { color: #4CAF50; }
+.form-status.error { color: var(--color-primary); }
+
+.social-links {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.social-links a i {
+    font-size: 2rem;
+    margin-right: 10px;
+    color: var(--color-primary);
+}
+
+.social-links a:hover i {
+    color: var(--color-secondary);
+}
+
+
+/* ============================================== */
+/* 11. FOOTER                     */
+/* ============================================== */
+.main-footer {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-subtle);
+    padding: 30px 0;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ============================================== */
+/* 12. RESPONSIVIDADE              */
+/* ============================================== */
+@media (max-width: 860px) {
+    .career-timeline { flex-direction: column; }
+    .timeline-photo-wrapper { width: 100%; max-width: 400px; margin: 0 auto 30px; }
+}
+
+@media (max-width: 768px) {
+    /* Navegação */
+    .desktop-nav { display: none; }
+    .menu-toggle { display: block; }
+
+    /* Seções */
+    section { padding: 60px 0; }
+    .section-title { font-size: 2.2rem; margin-bottom: 30px; }
+
+    /* Hero */
+    .hero-section h1 { font-size: 3rem; }
+    .hero-section h2 { font-size: 1.4rem; }
+    .hero-actions .btn { width: 80%; margin: 10px auto; display: block; }
+    
+    /* Sobre Mim */
+    .about-content { flex-direction: column; text-align: center; gap: 30px; }
+    .about-photo { width: 250px; height: 250px; border-radius: 50%; } /* Volta a ser redonda no mobile */
+    .about-text { padding: 0 10px; }
+
+    /* Carreira */
+    .timeline-items { padding-left: 20px; border-left: none; }
+    .timeline-item { margin-left: 10px; }
+    .timeline-item::before { left: -10px; border-color: var(--color-bg-light); }
+
+    /* Grid Layouts */
+    .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+    .project-links { display: flex; justify-content: space-around; }
+}
