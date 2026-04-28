@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 const container = {
   hidden: {},
@@ -159,14 +158,12 @@ export default function Hero() {
               <div className="absolute -inset-1.5 rounded-full border-2 border-red/20" />
 
               {/* Photo container */}
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-cream shadow-2xl shadow-navy/20">
-                <Image
+              <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-cream shadow-2xl shadow-navy/20">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/portfolio/profile.jpg"
                   alt="Márcio Mateus"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                  unoptimized
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
 

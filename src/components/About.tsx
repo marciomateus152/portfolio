@@ -6,7 +6,7 @@ import FadeIn from "./FadeIn";
 
 const education = [
   {
-    period: "2023 — 2027",
+    period: "2025 — 2027",
     title: "Análise e Desenvolvimento de Sistemas",
     institution: "Martha Falcão Wyden",
     detail: "Previsão de conclusão: Novembro de 2027.",
