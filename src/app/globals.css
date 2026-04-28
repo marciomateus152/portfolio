@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --cream: #fffdd0;
+    --beige: #f5f5dc;
+    --red: #e63946;
+    --navy: #1d3557;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--red);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--cream);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--navy);
+    border-radius: 3px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-hover {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(29, 53, 87, 0.12);
+  }
+
+  .magnetic-btn {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glow-red:hover {
+    box-shadow: 0 0 30px rgba(230, 57, 70, 0.35), 0 0 60px rgba(230, 57, 70, 0.15);
+  }
+
+  .glow-navy:hover {
+    box-shadow: 0 0 30px rgba(29, 53, 87, 0.35), 0 0 60px rgba(29, 53, 87, 0.15);
+  }
+}
+
+/* Marquee pause on hover */
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
