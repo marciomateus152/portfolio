@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const container = {
   hidden: {},
@@ -40,91 +41,157 @@ export default function Hero() {
         className="pointer-events-none absolute -bottom-40 -left-20 w-[600px] h-[600px] rounded-full bg-navy/6 blur-3xl"
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20">
-        <motion.div variants={container} initial="hidden" animate="show">
-          {/* Badges */}
-          <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-navy/20 bg-beige text-navy/60 text-xs font-semibold uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-red animate-pulse" />
-              Disponível para oportunidades
-            </span>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-navy/15 bg-beige text-navy/50 text-xs font-semibold">
-              🇧🇷 Manaus · Inglês Avançado
-            </span>
-          </motion.div>
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20 w-full">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 lg:gap-16">
 
-          {/* Main headline */}
-          <motion.h1
-            variants={item}
-            className="font-display font-black leading-[0.88] tracking-tight text-navy"
-            style={{ fontSize: "clamp(4rem, 11vw, 10rem)" }}
-          >
-            MÁRCIO
-            <br />
-            <span className="text-red">MATEUS</span>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.div variants={item} className="mt-6 flex items-center gap-4">
-            <div className="h-px w-12 bg-red rounded-full" />
-            <p className="text-lg md:text-xl font-medium text-navy/60">
-              Analista de Sistemas Júnior · Estudante de{" "}
-              <span className="text-navy font-bold">ADS</span>
-            </p>
-          </motion.div>
-
-          {/* Description — from CV Perfil */}
-          <motion.p
-            variants={item}
-            className="mt-8 max-w-2xl text-navy/60 text-base md:text-lg leading-relaxed"
-          >
-            Busco oportunidades em tecnologia atuando como desenvolvedor júnior ou
-            analista de sistemas, aplicando conhecimentos em desenvolvimento web, APIs
-            e suporte a sistemas para contribuir com a melhoria de processos e
-            crescimento das empresas. Ex-Fuzileiro Naval — disciplina e foco em cada
-            linha de código.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div variants={item} className="mt-12 flex flex-wrap gap-4">
-            <a
-              href="#projetos"
-              className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-full bg-navy text-cream font-semibold text-sm overflow-hidden transition-all duration-300 hover:scale-[1.03]"
-            >
-              <span className="relative z-10">Ver Projetos</span>
-              <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-200">→</span>
-              <span className="absolute inset-0 bg-red translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
-            </a>
-            <a
-              href="#sobre"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border-2 border-navy text-navy font-semibold text-sm hover:bg-navy hover:text-cream transition-all duration-300 hover:scale-[1.03]"
-            >
-              Minha Jornada
-            </a>
-          </motion.div>
-
-          {/* Stats */}
+          {/* ── Left: text content ── */}
           <motion.div
-            variants={item}
-            className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl"
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="flex-1 min-w-0"
           >
-            {[
-              { value: "ADS", label: "Martha Falcão Wyden" },
-              { value: "15+", label: "Repositórios GitHub" },
-              { value: "6+", label: "Certificações" },
-              { value: "B2+", label: "Inglês Avançado" },
-            ].map((stat) => (
-              <div key={stat.label} className="group">
-                <p className="font-display font-black text-2xl md:text-3xl text-navy group-hover:text-red transition-colors duration-300">
-                  {stat.value}
-                </p>
-                <p className="text-[11px] text-navy/45 mt-1 uppercase tracking-wider leading-tight">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
+            {/* Badges */}
+            <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-8">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-navy/20 bg-beige text-navy/60 text-xs font-semibold uppercase tracking-widest">
+                <span className="w-2 h-2 rounded-full bg-red animate-pulse" />
+                Disponível para oportunidades
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-navy/15 bg-beige text-navy/50 text-xs font-semibold">
+                🇧🇷 Manaus · Inglês Avançado
+              </span>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              variants={item}
+              className="font-display font-black leading-[0.88] tracking-tight text-navy"
+              style={{ fontSize: "clamp(3.5rem, 9vw, 9rem)" }}
+            >
+              MÁRCIO
+              <br />
+              <span className="text-red">MATEUS</span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.div variants={item} className="mt-6 flex items-center gap-4">
+              <div className="h-px w-12 bg-red rounded-full" />
+              <p className="text-lg md:text-xl font-medium text-navy/60">
+                Analista de Sistemas Júnior ·{" "}
+                <span className="text-navy font-bold">ADS</span>
+              </p>
+            </motion.div>
+
+            {/* Description */}
+            <motion.p
+              variants={item}
+              className="mt-8 max-w-xl text-navy/60 text-base md:text-lg leading-relaxed"
+            >
+              Busco oportunidades em tecnologia atuando como desenvolvedor júnior ou
+              analista de sistemas — aplicando conhecimentos em desenvolvimento web,
+              APIs e suporte a sistemas. Ex-Fuzileiro Naval: disciplina e foco em
+              cada linha de código.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="#projetos"
+                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-full bg-navy text-cream font-semibold text-sm overflow-hidden transition-all duration-300 hover:scale-[1.03]"
+              >
+                <span className="relative z-10">Ver Projetos</span>
+                <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-200">→</span>
+                <span className="absolute inset-0 bg-red translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" />
+              </a>
+              <a
+                href="#sobre"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border-2 border-navy text-navy font-semibold text-sm hover:bg-navy hover:text-cream transition-all duration-300 hover:scale-[1.03]"
+              >
+                Minha Jornada
+              </a>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              variants={item}
+              className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-lg"
+            >
+              {[
+                { value: "ADS", label: "Martha Falcão Wyden" },
+                { value: "15+", label: "Repositórios GitHub" },
+                { value: "6+", label: "Certificações" },
+                { value: "B2+", label: "Inglês Avançado" },
+              ].map((stat) => (
+                <div key={stat.label} className="group">
+                  <p className="font-display font-black text-2xl md:text-3xl text-navy group-hover:text-red transition-colors duration-300">
+                    {stat.value}
+                  </p>
+                  <p className="text-[11px] text-navy/45 mt-1 uppercase tracking-wider leading-tight">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* ── Right: profile photo ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex-shrink-0 flex justify-center lg:justify-end"
+          >
+            <div className="relative">
+              {/* Outer glow ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-3 rounded-full"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, #E63946, #1D3557, #FFFDD0, #E63946)",
+                  opacity: 0.25,
+                  filter: "blur(4px)",
+                }}
+              />
+
+              {/* Static decorative ring */}
+              <div className="absolute -inset-1.5 rounded-full border-2 border-red/20" />
+
+              {/* Photo container */}
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-cream shadow-2xl shadow-navy/20">
+                <Image
+                  src="/portfolio/profile.jpg"
+                  alt="Márcio Mateus"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                  unoptimized
+                />
+              </div>
+
+              {/* Floating badge — available */}
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-navy text-cream text-xs font-bold shadow-lg whitespace-nowrap"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                Open to work
+              </motion.div>
+
+              {/* Floating badge — location */}
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -top-3 -right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red text-cream text-xs font-bold shadow-lg"
+              >
+                📍 Manaus
+              </motion.div>
+            </div>
+          </motion.div>
+
+        </div>
       </div>
 
       {/* Scroll indicator */}
