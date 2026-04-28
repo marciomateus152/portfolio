@@ -41,9 +41,11 @@ export default function Contact() {
     <section id="contato" className="py-32 bg-cream overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="relative rounded-[2.5rem] bg-navy overflow-hidden p-10 md:p-16 lg:p-24">
-          {/* Background glow */}
-          <div className="pointer-events-none absolute top-0 left-1/4 w-96 h-96 bg-red/20 rounded-full blur-3xl -translate-y-1/2" />
-          <div className="pointer-events-none absolute bottom-0 right-1/4 w-96 h-96 bg-red/10 rounded-full blur-3xl translate-y-1/2" />
+          {/* Background glow — desktop only (blur-3xl is GPU-intensive on mobile) */}
+          <div aria-hidden className="pointer-events-none absolute top-0 left-1/4 w-96 h-96 bg-red/20 rounded-full blur-3xl -translate-y-1/2 hidden md:block" />
+          <div aria-hidden className="pointer-events-none absolute bottom-0 right-1/4 w-96 h-96 bg-red/10 rounded-full blur-3xl translate-y-1/2 hidden md:block" />
+          {/* Mobile: simple gradient overlay instead */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 md:hidden" style={{ background: "radial-gradient(ellipse at 30% 0%, rgba(230,57,70,0.15) 0%, transparent 60%)" }} />
 
           <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
             <FadeIn>

@@ -73,23 +73,33 @@ const SKILL_GROUPS: SkillGroup[] = [
   },
 ];
 
-function MarqueeRow({ items, reverse = false }: { items: typeof SKILLS_ROW_1; reverse?: boolean }) {
+function MarqueeRow({
+  items,
+  reverse = false,
+}: {
+  items: typeof SKILLS_ROW_1;
+  reverse?: boolean;
+}) {
+  // Double the list so the loop is seamless
   const doubled = [...items, ...items];
   return (
-    <div className="relative flex overflow-hidden marquee-wrapper">
+    <div
+      className="relative flex overflow-hidden marquee-wrapper"
+      style={{ contain: "layout style" }}
+    >
       <div
-        className={`flex gap-4 marquee-track ${reverse ? "animate-marquee2" : "animate-marquee"}`}
-        style={{ willChange: "transform" }}
+        className={`flex gap-3 marquee-track ${
+          reverse ? "animate-marquee2" : "animate-marquee"
+        }`}
       >
         {doubled.map((skill, i) => (
           <div
             key={`${skill.name}-${i}`}
-            className="flex-shrink-0 flex items-center gap-2.5 px-5 py-3 rounded-full border border-navy/12 bg-beige/60 hover:bg-navy hover:text-cream hover:border-navy transition-all duration-300 cursor-default group"
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-full border border-navy/12 bg-beige/70
+                       active:bg-navy active:text-cream transition-colors duration-150 cursor-default select-none"
           >
-            <span className="text-base group-hover:scale-110 transition-transform duration-200">
-              {skill.icon}
-            </span>
-            <span className="text-sm font-semibold text-navy/80 group-hover:text-cream whitespace-nowrap">
+            <span className="text-sm leading-none">{skill.icon}</span>
+            <span className="text-xs font-semibold text-navy/80 whitespace-nowrap">
               {skill.name}
             </span>
           </div>
@@ -101,19 +111,21 @@ function MarqueeRow({ items, reverse = false }: { items: typeof SKILLS_ROW_1; re
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-32 bg-beige/40 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="skills" className="py-24 bg-beige/40 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
         <FadeIn>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-5">
             <div className="h-px w-8 bg-red" />
-            <span className="text-red text-xs font-bold uppercase tracking-widest">Tech Stack</span>
+            <span className="text-red text-[11px] font-bold uppercase tracking-widest">
+              Tech Stack
+            </span>
           </div>
         </FadeIn>
 
-        <FadeIn delay={0.1}>
+        <FadeIn delay={0.08}>
           <h2
-            className="font-display font-black text-navy leading-tight mb-4"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
+            className="font-display font-black text-navy leading-tight mb-3"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
           >
             Tecnologias que
             <br />
@@ -121,41 +133,47 @@ export default function Skills() {
           </h2>
         </FadeIn>
 
-        <FadeIn delay={0.2}>
-          <p className="text-navy/55 text-lg max-w-xl mb-16">
-            Stack construída ao longo da jornada em ADS, cursos DankiCode, e
-            projetos reais — do frontend ao infra e sistemas de baixo nível.
+        <FadeIn delay={0.14}>
+          <p className="text-navy/55 text-sm sm:text-base max-w-lg mb-12">
+            Stack construída em ADS, cursos DankiCode e projetos reais — do
+            frontend ao infra.
           </p>
         </FadeIn>
       </div>
 
-      {/* Marquee */}
-      <div className="flex flex-col gap-4 mb-20">
+      {/* Marquee rows — GPU-accelerated */}
+      <div className="flex flex-col gap-3 mb-16">
         <MarqueeRow items={SKILLS_ROW_1} />
         <MarqueeRow items={SKILLS_ROW_2} reverse />
       </div>
 
-      {/* Grouped skill bars */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+      {/* Skill bars */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
         <FadeIn>
-          <h3 className="font-display font-bold text-navy text-xl mb-8">Proficiência por Área</h3>
+          <h3 className="font-display font-bold text-navy text-lg mb-6">
+            Proficiência por Área
+          </h3>
         </FadeIn>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-4">
           {SKILL_GROUPS.map((group, gi) => (
-            <FadeIn key={group.label} delay={gi * 0.08}>
-              <div className="p-6 rounded-2xl bg-cream border border-navy/8 hover:border-navy/15 transition-all duration-300">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${group.color}`} />
-                  <span className="text-xs font-bold text-navy/40 uppercase tracking-widest">
+            <FadeIn key={group.label} delay={gi * 0.06}>
+              <div className="p-5 rounded-2xl bg-cream border border-navy/8">
+                <div className="flex items-center gap-2 mb-4">
+                  <div
+                    className={`w-2 h-2 rounded-full bg-gradient-to-r ${group.color}`}
+                  />
+                  <span className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">
                     {group.label}
                   </span>
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3.5">
                   {group.skills.map((skill) => (
                     <div key={skill.name}>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-sm font-semibold text-navy">{skill.name}</span>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm font-semibold text-navy">
+                          {skill.name}
+                        </span>
                         <span className="text-xs text-navy/35">{skill.level}%</span>
                       </div>
                       <div className="h-1.5 rounded-full bg-navy/8 overflow-hidden">
@@ -173,15 +191,17 @@ export default function Skills() {
         </div>
 
         {/* Language */}
-        <FadeIn delay={0.3}>
-          <div className="mt-6 flex items-center gap-4 p-5 rounded-2xl bg-navy/5 border border-navy/10 max-w-sm">
-            <span className="text-2xl">🌍</span>
-            <div>
+        <FadeIn delay={0.2}>
+          <div className="mt-4 flex items-center gap-4 p-4 rounded-2xl bg-navy/5 border border-navy/10 max-w-sm">
+            <span className="text-xl">🌍</span>
+            <div className="flex-1 min-w-0">
               <p className="font-bold text-navy text-sm">Inglês — Avançado (B2+)</p>
-              <p className="text-navy/45 text-xs mt-0.5">Leitura técnica, documentação e comunicação</p>
+              <p className="text-navy/45 text-xs mt-0.5">
+                Leitura técnica, documentação e comunicação
+              </p>
             </div>
-            <div className="ml-auto flex gap-1">
-              {[1,2,3,4].map(i => (
+            <div className="flex gap-1 flex-shrink-0">
+              {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="w-2 h-2 rounded-full bg-red" />
               ))}
               <div className="w-2 h-2 rounded-full bg-navy/20" />

@@ -14,6 +14,9 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Better mobile scroll */
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
   }
 
   body {
@@ -22,26 +25,31 @@
     overflow-x: hidden;
   }
 
+  /* Remove 300ms tap delay globally */
+  a, button, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   ::selection {
     background-color: var(--red);
     color: #fff;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--cream);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--navy);
-    border-radius: 3px;
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 2px; }
+
+  /* Contain layout for heavy sections — reduces paint area */
+  section { contain: layout style; }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Force GPU layer — use on anything that animates */
+  .gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .gradient-text {
@@ -51,29 +59,58 @@
     background-clip: text;
   }
 
-  .card-hover {
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Marquee pause on hover */
+  .marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
   }
 
-  .card-hover:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(29, 53, 87, 0.12);
-  }
-
-  .magnetic-btn {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .glow-red:hover {
-    box-shadow: 0 0 30px rgba(230, 57, 70, 0.35), 0 0 60px rgba(230, 57, 70, 0.15);
-  }
-
-  .glow-navy:hover {
-    box-shadow: 0 0 30px rgba(29, 53, 87, 0.35), 0 0 60px rgba(29, 53, 87, 0.15);
+  /* Glow effects — desktop only to avoid GPU thrash on mobile */
+  @media (hover: hover) {
+    .glow-red:hover {
+      box-shadow: 0 0 30px rgba(230, 57, 70, 0.3), 0 0 60px rgba(230, 57, 70, 0.12);
+    }
+    .glow-navy:hover {
+      box-shadow: 0 0 30px rgba(29, 53, 87, 0.3), 0 0 60px rgba(29, 53, 87, 0.12);
+    }
   }
 }
 
-/* Marquee pause on hover */
-.marquee-wrapper:hover .marquee-track {
-  animation-play-state: paused;
+/* ─── Marquee ─────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee2 {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.marquee-track {
+  /* Hardware-accelerate the marquee — critical for mobile */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.animate-marquee  { animation: marquee  35s linear infinite; }
+.animate-marquee2 { animation: marquee2 35s linear infinite; }
+
+/* ─── Reduced Motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee-track { animation-play-state: paused !important; }
+}
+
+/* ─── Mobile touch card feedback (no hover states needed) */
+@media (pointer: coarse) {
+  /* Replace hover transform with active for touch */
+  .card-touch:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
 }
