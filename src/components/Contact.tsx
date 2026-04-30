@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 import FadeIn from "./FadeIn";
 
 const socials = [
@@ -37,82 +38,210 @@ const socials = [
 ];
 
 export default function Contact() {
+  const reduced = useReducedMotion();
+  const [sent, setSent] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const name    = data.get("name") as string;
+    const message = data.get("message") as string;
+    const subject = encodeURIComponent(`Contato via portfólio — ${name}`);
+    const body    = encodeURIComponent(message);
+    window.open(`mailto:marciomateus152@gmail.com?subject=${subject}&body=${body}`, "_blank");
+    setSent(true);
+    setTimeout(() => setSent(false), 3000);
+  }
+
   return (
-    <section id="contato" className="py-32 bg-cream overflow-hidden">
+    <section id="contato" className="py-32 overflow-hidden" style={{ background: "#0e1e32" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="relative rounded-[2.5rem] bg-navy overflow-hidden p-10 md:p-16 lg:p-24">
-          {/* Background glow — desktop only (blur-3xl is GPU-intensive on mobile) */}
-          <div aria-hidden className="pointer-events-none absolute top-0 left-1/4 w-96 h-96 bg-red/20 rounded-full blur-3xl -translate-y-1/2 hidden md:block" />
-          <div aria-hidden className="pointer-events-none absolute bottom-0 right-1/4 w-96 h-96 bg-red/10 rounded-full blur-3xl translate-y-1/2 hidden md:block" />
-          {/* Mobile: simple gradient overlay instead */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 md:hidden" style={{ background: "radial-gradient(ellipse at 30% 0%, rgba(230,57,70,0.15) 0%, transparent 60%)" }} />
+        <div
+          className="relative rounded-[2.5rem] overflow-hidden p-10 md:p-16 lg:p-20"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(11,21,37,0.98) 0%, rgba(18,34,58,0.98) 100%)",
+            border: "1px solid rgba(255,253,208,0.07)",
+            boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
+          }}
+        >
+          {/* Ambient glows */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-1/4 w-96 h-96 rounded-full -translate-y-1/2 hidden md:block animate-pulse-glow"
+            style={{ background: "radial-gradient(circle, rgba(230,57,70,0.2) 0%, transparent 65%)" }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 right-1/4 w-80 h-80 rounded-full translate-y-1/2 hidden md:block"
+            style={{ background: "radial-gradient(circle, rgba(230,57,70,0.1) 0%, transparent 65%)" }}
+          />
+          {/* Mobile ambient */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 md:hidden"
+            style={{ background: "radial-gradient(ellipse at 30% 0%, rgba(230,57,70,0.12) 0%, transparent 60%)" }}
+          />
 
-          <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
-            <FadeIn>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-red" />
-                <span className="text-red text-xs font-bold uppercase tracking-widest">Contato</span>
-                <div className="h-px w-8 bg-red" />
-              </div>
-            </FadeIn>
+          {/* Top border glow */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-0 right-0 h-px"
+            style={{ background: "linear-gradient(90deg, transparent, rgba(230,57,70,0.5), transparent)" }}
+          />
 
-            <FadeIn delay={0.1}>
-              <h2
-                className="font-display font-black text-cream leading-tight"
-                style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
-              >
-                Vamos construir
-                <br />
-                <span className="text-red">algo juntos?</span>
-              </h2>
-            </FadeIn>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <FadeIn>
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <div className="h-px w-8 bg-red" style={{ boxShadow: "0 0 8px rgba(230,57,70,0.6)" }} />
+                  <span className="text-red text-xs font-bold uppercase tracking-widest">Contato</span>
+                  <div className="h-px w-8 bg-red" style={{ boxShadow: "0 0 8px rgba(230,57,70,0.6)" }} />
+                </div>
+              </FadeIn>
 
-            <FadeIn delay={0.2}>
-              <p className="mt-6 text-cream/50 text-lg max-w-lg leading-relaxed">
-                Estou disponível para estágios, posições júnior e colaborações.
-                Se tens um projecto interessante, fala comigo.
-              </p>
-            </FadeIn>
+              <FadeIn delay={0.1}>
+                <h2
+                  className="font-display font-black text-cream leading-tight"
+                  style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+                >
+                  Vamos construir
+                  <br />
+                  <span className="gradient-text-red">algo juntos?</span>
+                </h2>
+              </FadeIn>
 
-            <FadeIn delay={0.3}>
-              <a
-                href="mailto:marciomateus152@gmail.com"
-                className="group mt-10 inline-flex items-center gap-3 px-10 py-5 rounded-full bg-red text-cream font-bold text-base hover:bg-red-dark transition-all duration-300 hover:scale-[1.04] shadow-lg shadow-red/30"
-              >
-                Enviar Email
-                <span className="group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-200">↗</span>
-              </a>
-            </FadeIn>
+              <FadeIn delay={0.2}>
+                <p className="mt-6 text-cream/45 text-lg max-w-lg mx-auto leading-relaxed">
+                  Estou disponível para estágios, posições júnior e colaborações.
+                  Se tens um projecto interessante, fala comigo.
+                </p>
+              </FadeIn>
+            </div>
 
-            {/* Divider */}
-            <FadeIn delay={0.4}>
-              <div className="w-full my-12 h-px bg-white/10" />
-            </FadeIn>
-
-            {/* Social links */}
-            <FadeIn delay={0.45}>
-              <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-                {socials.map((s) => (
-                  <a
-                    key={s.name}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-red/40 transition-all duration-300"
+            {/* Two-column: form + quick links */}
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              {/* Contact form */}
+              <FadeIn delay={0.25}>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <div>
+                    <label className="block text-cream/50 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                      Seu Nome
+                    </label>
+                    <input
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="João Silva"
+                      className="w-full px-4 py-3 rounded-xl text-cream text-sm placeholder-cream/25 outline-none transition-all duration-300 focus:border-red/40 focus:shadow-[0_0_15px_rgba(230,57,70,0.12)]"
+                      style={{
+                        background: "rgba(255,253,208,0.04)",
+                        border: "1px solid rgba(255,253,208,0.09)",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-cream/50 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                      Email
+                    </label>
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="joao@empresa.com"
+                      className="w-full px-4 py-3 rounded-xl text-cream text-sm placeholder-cream/25 outline-none transition-all duration-300 focus:border-red/40 focus:shadow-[0_0_15px_rgba(230,57,70,0.12)]"
+                      style={{
+                        background: "rgba(255,253,208,0.04)",
+                        border: "1px solid rgba(255,253,208,0.09)",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-cream/50 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                      Mensagem
+                    </label>
+                    <textarea
+                      name="message"
+                      required
+                      rows={4}
+                      placeholder="Olá Márcio, vi seu portfólio e..."
+                      className="w-full px-4 py-3 rounded-xl text-cream text-sm placeholder-cream/25 outline-none transition-all duration-300 focus:border-red/40 focus:shadow-[0_0_15px_rgba(230,57,70,0.12)] resize-none"
+                      style={{
+                        background: "rgba(255,253,208,0.04)",
+                        border: "1px solid rgba(255,253,208,0.09)",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    />
+                  </div>
+                  <motion.button
+                    type="submit"
+                    whileTap={reduced ? {} : { scale: 0.97 }}
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-red text-cream font-bold text-sm transition-all duration-300 hover:shadow-[0_0_30px_rgba(230,57,70,0.45)] hover:bg-red-dark"
                   >
-                    <span className="text-cream/60 group-hover:text-red transition-colors duration-200">
-                      {s.icon}
-                    </span>
-                    <div className="text-left">
-                      <p className="text-cream/40 text-xs uppercase tracking-wider">{s.name}</p>
-                      <p className="text-cream text-sm font-semibold mt-0.5 truncate max-w-[180px]">
-                        {s.handle}
+                    {sent ? (
+                      <>✓ Abrindo cliente de email...</>
+                    ) : (
+                      <>Enviar Mensagem <span>↗</span></>
+                    )}
+                  </motion.button>
+                </form>
+              </FadeIn>
+
+              {/* Quick contact */}
+              <FadeIn delay={0.35}>
+                <div className="flex flex-col gap-4">
+                  {/* Direct email CTA */}
+                  <a
+                    href="mailto:marciomateus152@gmail.com"
+                    className="group flex items-center gap-4 p-5 rounded-2xl glass glass-hover card-touch transition-all duration-300 hover:border-red/25 hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)]"
+                  >
+                    <div
+                      className="w-11 h-11 rounded-xl bg-red flex items-center justify-center text-cream flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                      style={{ boxShadow: "0 0 15px rgba(230,57,70,0.4)" }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-cream/40 text-xs uppercase tracking-wider font-semibold">Email Direto</p>
+                      <p className="text-cream text-sm font-semibold mt-0.5 group-hover:text-red transition-colors duration-200">
+                        marciomateus152@gmail.com
                       </p>
                     </div>
                   </a>
-                ))}
-              </div>
-            </FadeIn>
+
+                  {/* Socials */}
+                  <div className="flex flex-col gap-3">
+                    {socials.map((s) => (
+                      <a
+                        key={s.name}
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 px-5 py-4 rounded-2xl glass glass-hover card-touch transition-all duration-300 hover:border-red/25"
+                      >
+                        <span className="text-cream/40 group-hover:text-red transition-colors duration-200">
+                          {s.icon}
+                        </span>
+                        <div className="text-left">
+                          <p className="text-cream/35 text-xs uppercase tracking-wider">{s.name}</p>
+                          <p className="text-cream text-sm font-semibold mt-0.5 truncate max-w-[180px]">
+                            {s.handle}
+                          </p>
+                        </div>
+                        <span className="ml-auto text-cream/20 group-hover:text-red group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 text-sm">
+                          ↗
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
           </div>
         </div>
       </div>

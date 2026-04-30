@@ -8,24 +8,32 @@
     --beige: #f5f5dc;
     --red: #e63946;
     --navy: #1d3557;
+    --navy-dark: #0b1525;
+
+    --glass-bg: rgba(255, 253, 208, 0.04);
+    --glass-border: rgba(255, 253, 208, 0.09);
+    --glass-bg-hover: rgba(255, 253, 208, 0.08);
+    --glass-border-hover: rgba(255, 253, 208, 0.2);
+    --glass-bg-strong: rgba(255, 253, 208, 0.07);
+
+    --glow-red: rgba(230, 57, 70, 0.4);
+    --glow-cream: rgba(255, 253, 208, 0.12);
   }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Better mobile scroll */
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
   }
 
   body {
-    background-color: var(--cream);
-    color: var(--navy);
+    background-color: #0b1525;
+    color: var(--cream);
     overflow-x: hidden;
   }
 
-  /* Remove 300ms tap delay globally */
   a, button, [role="button"] {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -36,46 +44,81 @@
     color: #fff;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--cream); }
-  ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 2px; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: #0b1525; }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 99px; }
 
-  /* Contain layout for heavy sections — reduces paint area */
   section { contain: layout style; }
 }
 
 @layer utilities {
-  /* Force GPU layer — use on anything that animates */
   .gpu {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
 
+  /* Glass panel system */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-hover {
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-hover:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+  }
+
+  /* Gradient text */
   .gradient-text {
-    background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+    background: linear-gradient(135deg, #e63946 0%, #fffdd0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Marquee pause on hover */
+  .gradient-text-red {
+    background: linear-gradient(135deg, #e63946, #ff6b77, #e63946);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s linear infinite;
+  }
+
+  /* Marquee */
   .marquee-wrapper:hover .marquee-track {
     animation-play-state: paused;
   }
 
-  /* Glow effects — desktop only to avoid GPU thrash on mobile */
+  /* Glow effects — desktop only */
   @media (hover: hover) {
     .glow-red:hover {
-      box-shadow: 0 0 30px rgba(230, 57, 70, 0.3), 0 0 60px rgba(230, 57, 70, 0.12);
+      box-shadow: 0 0 30px rgba(230, 57, 70, 0.4), 0 0 60px rgba(230, 57, 70, 0.15);
     }
-    .glow-navy:hover {
-      box-shadow: 0 0 30px rgba(29, 53, 87, 0.3), 0 0 60px rgba(29, 53, 87, 0.12);
+    .glow-cream:hover {
+      box-shadow: 0 0 30px rgba(255, 253, 208, 0.12), 0 0 60px rgba(255, 253, 208, 0.06);
+    }
+    .glow-card:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 253, 208, 0.18);
     }
   }
 }
 
-/* ─── Marquee ─────────────────────────────────────────── */
+/* ─── Keyframes ─────────────────────────────────────────── */
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -84,17 +127,79 @@
   from { transform: translateX(-50%); }
   to   { transform: translateX(0); }
 }
+@keyframes gradient-shift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes gradient-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes float-y-reverse {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(10px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.35; }
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.7; }
+}
+@keyframes skill-fill {
+  from { width: 0; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(230,57,70,0.2); }
+  50%       { border-color: rgba(230,57,70,0.5); }
+}
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
 
+/* ─── Animation classes ──────────────────────────────────── */
 .marquee-track {
-  /* Hardware-accelerate the marquee — critical for mobile */
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-.animate-marquee  { animation: marquee  35s linear infinite; }
-.animate-marquee2 { animation: marquee2 35s linear infinite; }
+.animate-marquee   { animation: marquee  35s linear infinite; }
+.animate-marquee2  { animation: marquee2 35s linear infinite; }
+.animate-gradient  { animation: gradient-flow 12s ease infinite; }
+.animate-float     { animation: float-y 5s ease-in-out infinite; }
+.animate-float-rev { animation: float-y-reverse 5s ease-in-out infinite; }
+.animate-pulse-glow{ animation: pulse-glow 4s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+.animate-spin-rev  { animation: spin-reverse 30s linear infinite; }
+.animate-border-glow { animation: border-glow 3s ease-in-out infinite; }
+
+/* Skill bar entrance animation (triggered via JS/Framer) */
+.skill-bar-fill {
+  animation: skill-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Hero gradient background ──────────────────────────── */
+.hero-bg {
+  background: linear-gradient(-45deg, #0b1525, #1d3557, #0f1a30, #0b1525);
+  background-size: 400% 400%;
+  animation: gradient-flow 18s ease infinite;
+}
 
 /* ─── Reduced Motion ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -106,9 +211,8 @@
   .marquee-track { animation-play-state: paused !important; }
 }
 
-/* ─── Mobile touch card feedback (no hover states needed) */
+/* ─── Mobile touch card feedback ─────────────────────────── */
 @media (pointer: coarse) {
-  /* Replace hover transform with active for touch */
   .card-touch:active {
     transform: scale(0.98);
     transition: transform 0.1s ease;
